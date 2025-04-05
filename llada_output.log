@@ -1,0 +1,892 @@
+🌱 Setting up environment...
+🔥 Trying to import torch...
+Torch version: 2.6.0+cu124
+🚀 Launching Gradio app
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: aniketh-malyala (aniketh-malyala-yale-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.9
+wandb: Run data is saved locally in /vast/palmer/home.grace/alm293/llada_lora_scheduler/wandb/run-20250405_030543-pwpof8y2
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run bajoran-manoeuvre-2
+wandb: ⭐️ View project at https://wandb.ai/aniketh-malyala-yale-university/llada-lora-finetuning
+wandb: 🚀 View run at https://wandb.ai/aniketh-malyala-yale-university/llada-lora-finetuning/runs/pwpof8y2
+The model weights are not tied. Please use the `tie_weights` method before using the `infer_auto_device` function.
+Loading checkpoint shards:   0%|          | 0/6 [00:00<?, ?it/s]Loading checkpoint shards:  17%|█▋        | 1/6 [00:00<00:04,  1.12it/s]Loading checkpoint shards:  33%|███▎      | 2/6 [00:02<00:04,  1.04s/it]Loading checkpoint shards:  50%|█████     | 3/6 [00:03<00:03,  1.13s/it]Loading checkpoint shards:  67%|██████▋   | 4/6 [00:04<00:02,  1.13s/it]Loading checkpoint shards:  83%|████████▎ | 5/6 [00:05<00:01,  1.13s/it]Loading checkpoint shards: 100%|██████████| 6/6 [00:06<00:00,  1.10s/it]Loading checkpoint shards: 100%|██████████| 6/6 [00:06<00:00,  1.10s/it]
+trainable params: 6,291,456 || all params: 8,021,872,640 || trainable%: 0.0784
+Epoch 1:   0%|          | 0/5000 [00:00<?, ?it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 1.1918
+Epoch 1:   0%|          | 1/5000 [00:00<1:17:21,  1.08it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.8081
+Epoch 1:   0%|          | 2/5000 [00:01<37:55,  2.20it/s]  [DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 2.0311
+Epoch 1:   0%|          | 3/5000 [00:01<25:21,  3.28it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0406
+Epoch 1:   0%|          | 4/5000 [00:01<28:02,  2.97it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0558
+Epoch 1:   0%|          | 5/5000 [00:01<21:50,  3.81it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.9568
+Epoch 1:   0%|          | 6/5000 [00:01<18:00,  4.62it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0977
+Epoch 1:   0%|          | 7/5000 [00:01<15:35,  5.34it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0029
+Epoch 1:   0%|          | 8/5000 [00:02<14:10,  5.87it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0018
+Epoch 1:   0%|          | 9/5000 [00:02<13:05,  6.35it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 3.7052
+Epoch 1:   0%|          | 10/5000 [00:02<12:19,  6.75it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 2.1382
+Epoch 1:   0%|          | 11/5000 [00:02<11:54,  6.99it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0603
+Epoch 1:   0%|          | 12/5000 [00:02<17:44,  4.69it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 3.0529
+Epoch 1:   0%|          | 13/5000 [00:02<15:36,  5.33it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 3.1234
+Epoch 1:   0%|          | 14/5000 [00:03<14:05,  5.89it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 2.9662
+Epoch 1:   0%|          | 15/5000 [00:03<13:02,  6.37it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.3097
+Epoch 1:   0%|          | 16/5000 [00:03<12:27,  6.67it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 2.9768
+Epoch 1:   0%|          | 17/5000 [00:03<11:55,  6.96it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.8461
+Epoch 1:   0%|          | 18/5000 [00:03<11:32,  7.19it/s][DEBUG] Total masked tokens: 3
+[DEBUG] Logits shape: torch.Size([3, 126464]), Targets shape: torch.Size([3])
+[DEBUG] Avg masked token loss: 1.9688
+Epoch 1:   0%|          | 19/5000 [00:03<11:17,  7.35it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 2.6843
+Epoch 1:   0%|          | 20/5000 [00:04<16:58,  4.89it/s][DEBUG] Total masked tokens: 16
+[DEBUG] Logits shape: torch.Size([16, 126464]), Targets shape: torch.Size([16])
+[DEBUG] Avg masked token loss: 1.4550
+Epoch 1:   0%|          | 21/5000 [00:04<15:05,  5.50it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 3.9812
+Epoch 1:   0%|          | 22/5000 [00:04<13:43,  6.04it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 1.0829
+Epoch 1:   0%|          | 23/5000 [00:04<12:46,  6.49it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.6223
+Epoch 1:   0%|          | 24/5000 [00:04<12:17,  6.74it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.8640
+Epoch 1:   0%|          | 25/5000 [00:04<11:52,  6.98it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.9828
+Epoch 1:   1%|          | 26/5000 [00:04<11:29,  7.21it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.2134
+Epoch 1:   1%|          | 27/5000 [00:05<11:13,  7.39it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0248
+Epoch 1:   1%|          | 28/5000 [00:05<16:58,  4.88it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0296
+Epoch 1:   1%|          | 29/5000 [00:05<15:04,  5.49it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.2461
+Epoch 1:   1%|          | 30/5000 [00:05<13:42,  6.04it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0102
+Epoch 1:   1%|          | 31/5000 [00:05<12:45,  6.49it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.7670
+Epoch 1:   1%|          | 32/5000 [00:05<12:15,  6.76it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.9212
+Epoch 1:   1%|          | 33/5000 [00:06<11:46,  7.03it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 2.3207
+Epoch 1:   1%|          | 34/5000 [00:06<11:23,  7.27it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0815
+Epoch 1:   1%|          | 35/5000 [00:06<11:07,  7.44it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 1.0895
+Epoch 1:   1%|          | 36/5000 [00:06<17:02,  4.85it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 2.2872
+Epoch 1:   1%|          | 37/5000 [00:06<15:11,  5.45it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0087
+Epoch 1:   1%|          | 38/5000 [00:06<13:48,  5.99it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0039
+Epoch 1:   1%|          | 39/5000 [00:07<12:48,  6.46it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0125
+Epoch 1:   1%|          | 40/5000 [00:07<12:17,  6.72it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.7972
+Epoch 1:   1%|          | 41/5000 [00:07<11:46,  7.02it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 1.5753
+Epoch 1:   1%|          | 42/5000 [00:07<11:22,  7.26it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 1.2993
+Epoch 1:   1%|          | 43/5000 [00:07<11:06,  7.43it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0157
+Epoch 1:   1%|          | 44/5000 [00:07<11:07,  7.43it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 2.0330
+Epoch 1:   1%|          | 45/5000 [00:08<16:46,  4.92it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 0.7403
+Epoch 1:   1%|          | 46/5000 [00:08<14:53,  5.54it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.4572
+Epoch 1:   1%|          | 47/5000 [00:08<13:34,  6.08it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.2076
+Epoch 1:   1%|          | 48/5000 [00:08<12:51,  6.42it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.6055
+Epoch 1:   1%|          | 49/5000 [00:08<12:09,  6.79it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0024
+Epoch 1:   1%|          | 50/5000 [00:08<11:30,  7.16it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.1156
+Epoch 1:   1%|          | 51/5000 [00:08<11:03,  7.46it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0322
+Epoch 1:   1%|          | 52/5000 [00:08<10:54,  7.56it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.1787
+Epoch 1:   1%|          | 53/5000 [00:09<16:37,  4.96it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.7991
+Epoch 1:   1%|          | 54/5000 [00:09<14:38,  5.63it/s][DEBUG] Total masked tokens: 4
+[DEBUG] Logits shape: torch.Size([4, 126464]), Targets shape: torch.Size([4])
+[DEBUG] Avg masked token loss: 0.0169
+Epoch 1:   1%|          | 55/5000 [00:09<13:15,  6.22it/s][DEBUG] Total masked tokens: 2
+[DEBUG] Logits shape: torch.Size([2, 126464]), Targets shape: torch.Size([2])
+[DEBUG] Avg masked token loss: 0.0002
+Epoch 1:   1%|          | 56/5000 [00:09<12:26,  6.62it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.1863
+Epoch 1:   1%|          | 57/5000 [00:09<11:46,  7.00it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0458
+Epoch 1:   1%|          | 58/5000 [00:09<11:19,  7.28it/s][DEBUG] Total masked tokens: 3
+[DEBUG] Logits shape: torch.Size([3, 126464]), Targets shape: torch.Size([3])
+[DEBUG] Avg masked token loss: 0.5818
+Epoch 1:   1%|          | 59/5000 [00:10<11:04,  7.43it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0016
+Epoch 1:   1%|          | 60/5000 [00:10<11:02,  7.45it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.1035
+Epoch 1:   1%|          | 61/5000 [00:10<16:48,  4.90it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.6143
+Epoch 1:   1%|          | 62/5000 [00:10<14:55,  5.52it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0325
+Epoch 1:   1%|▏         | 63/5000 [00:10<13:35,  6.05it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0973
+Epoch 1:   1%|▏         | 64/5000 [00:10<12:49,  6.41it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 1.1050
+Epoch 1:   1%|▏         | 65/5000 [00:11<12:09,  6.76it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0202
+Epoch 1:   1%|▏         | 66/5000 [00:11<11:39,  7.05it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.9676
+Epoch 1:   1%|▏         | 67/5000 [00:11<11:18,  7.27it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.1848
+Epoch 1:   1%|▏         | 68/5000 [00:11<11:13,  7.32it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0579
+Epoch 1:   1%|▏         | 69/5000 [00:11<16:55,  4.86it/s][DEBUG] Total masked tokens: 17
+[DEBUG] Logits shape: torch.Size([17, 126464]), Targets shape: torch.Size([17])
+[DEBUG] Avg masked token loss: 0.3435
+Epoch 1:   1%|▏         | 70/5000 [00:11<14:59,  5.48it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.2650
+Epoch 1:   1%|▏         | 71/5000 [00:12<13:38,  6.02it/s][DEBUG] Total masked tokens: 4
+[DEBUG] Logits shape: torch.Size([4, 126464]), Targets shape: torch.Size([4])
+[DEBUG] Avg masked token loss: 0.0006
+Epoch 1:   1%|▏         | 72/5000 [00:12<12:57,  6.34it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0050
+Epoch 1:   1%|▏         | 73/5000 [00:12<12:13,  6.72it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0022
+Epoch 1:   1%|▏         | 74/5000 [00:12<11:41,  7.02it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0135
+Epoch 1:   2%|▏         | 75/5000 [00:12<11:19,  7.25it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0034
+Epoch 1:   2%|▏         | 76/5000 [00:12<11:13,  7.31it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 1.1232
+Epoch 1:   2%|▏         | 77/5000 [00:13<16:54,  4.85it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.1650
+Epoch 1:   2%|▏         | 78/5000 [00:13<14:58,  5.48it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0136
+Epoch 1:   2%|▏         | 79/5000 [00:13<13:36,  6.02it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0824
+Epoch 1:   2%|▏         | 80/5000 [00:13<12:49,  6.39it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0018
+Epoch 1:   2%|▏         | 81/5000 [00:13<12:08,  6.75it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.1153
+Epoch 1:   2%|▏         | 82/5000 [00:13<11:37,  7.05it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0022
+Epoch 1:   2%|▏         | 83/5000 [00:13<11:16,  7.27it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0244
+Epoch 1:   2%|▏         | 84/5000 [00:14<11:11,  7.32it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.4346
+Epoch 1:   2%|▏         | 85/5000 [00:14<16:54,  4.85it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0268
+Epoch 1:   2%|▏         | 86/5000 [00:14<14:57,  5.47it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.6237
+Epoch 1:   2%|▏         | 87/5000 [00:14<13:36,  6.02it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0047
+Epoch 1:   2%|▏         | 88/5000 [00:14<12:48,  6.39it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.7015
+Epoch 1:   2%|▏         | 89/5000 [00:14<12:07,  6.75it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0064
+Epoch 1:   2%|▏         | 90/5000 [00:15<11:36,  7.05it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0566
+Epoch 1:   2%|▏         | 91/5000 [00:15<11:14,  7.27it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0052
+Epoch 1:   2%|▏         | 92/5000 [00:15<11:09,  7.33it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.3833
+Epoch 1:   2%|▏         | 93/5000 [00:15<16:52,  4.84it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0044
+Epoch 1:   2%|▏         | 94/5000 [00:15<14:56,  5.47it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0214
+Epoch 1:   2%|▏         | 95/5000 [00:15<13:35,  6.01it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.2193
+Epoch 1:   2%|▏         | 96/5000 [00:16<12:48,  6.38it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0331
+Epoch 1:   2%|▏         | 97/5000 [00:16<12:06,  6.75it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0016
+Epoch 1:   2%|▏         | 98/5000 [00:16<11:36,  7.04it/s][DEBUG] Total masked tokens: 16
+[DEBUG] Logits shape: torch.Size([16, 126464]), Targets shape: torch.Size([16])
+[DEBUG] Avg masked token loss: 0.5969
+Epoch 1:   2%|▏         | 99/5000 [00:16<11:14,  7.27it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 1.1985
+Epoch 1:   2%|▏         | 100/5000 [00:16<11:12,  7.28it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 1.0535
+Epoch 1:   2%|▏         | 101/5000 [00:16<16:52,  4.84it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0026
+Epoch 1:   2%|▏         | 102/5000 [00:17<14:54,  5.47it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0065
+Epoch 1:   2%|▏         | 103/5000 [00:17<13:34,  6.01it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0236
+Epoch 1:   2%|▏         | 104/5000 [00:17<12:50,  6.36it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.2014
+Epoch 1:   2%|▏         | 105/5000 [00:17<12:11,  6.69it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.7082
+Epoch 1:   2%|▏         | 106/5000 [00:17<11:40,  6.99it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.6711
+Epoch 1:   2%|▏         | 107/5000 [00:17<11:18,  7.21it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.4267
+Epoch 1:   2%|▏         | 108/5000 [00:17<11:12,  7.27it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.3689
+Epoch 1:   2%|▏         | 109/5000 [00:18<16:56,  4.81it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.2783
+Epoch 1:   2%|▏         | 110/5000 [00:18<14:57,  5.45it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0019
+Epoch 1:   2%|▏         | 111/5000 [00:18<13:32,  6.02it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.6532
+Epoch 1:   2%|▏         | 112/5000 [00:18<12:41,  6.42it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.4647
+Epoch 1:   2%|▏         | 113/5000 [00:18<11:56,  6.82it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0027
+Epoch 1:   2%|▏         | 114/5000 [00:18<11:21,  7.17it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.1037
+Epoch 1:   2%|▏         | 115/5000 [00:18<10:56,  7.44it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.3230
+Epoch 1:   2%|▏         | 116/5000 [00:19<10:48,  7.53it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0727
+Epoch 1:   2%|▏         | 117/5000 [00:19<15:14,  5.34it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0188
+Epoch 1:   2%|▏         | 118/5000 [00:19<13:40,  5.95it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.1412
+Epoch 1:   2%|▏         | 119/5000 [00:19<12:40,  6.42it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0115
+Epoch 1:   2%|▏         | 120/5000 [00:19<12:09,  6.69it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.3721
+Epoch 1:   2%|▏         | 121/5000 [00:19<11:40,  6.97it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.2376
+Epoch 1:   2%|▏         | 122/5000 [00:20<11:17,  7.19it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0385
+Epoch 1:   2%|▏         | 123/5000 [00:20<11:02,  7.37it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0791
+Epoch 1:   2%|▏         | 124/5000 [00:20<10:59,  7.39it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0013
+Epoch 1:   2%|▎         | 125/5000 [00:20<16:38,  4.88it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0049
+Epoch 1:   3%|▎         | 126/5000 [00:20<14:45,  5.51it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.1410
+Epoch 1:   3%|▎         | 127/5000 [00:20<13:27,  6.04it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.1023
+Epoch 1:   3%|▎         | 128/5000 [00:21<12:43,  6.38it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.1234
+Epoch 1:   3%|▎         | 129/5000 [00:21<12:05,  6.72it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.7867
+Epoch 1:   3%|▎         | 130/5000 [00:21<11:41,  6.94it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0073
+Epoch 1:   3%|▎         | 131/5000 [00:21<11:29,  7.07it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.6225
+Epoch 1:   3%|▎         | 132/5000 [00:21<11:32,  7.03it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0017
+Epoch 1:   3%|▎         | 133/5000 [00:21<16:40,  4.86it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0050
+Epoch 1:   3%|▎         | 134/5000 [00:22<15:03,  5.39it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.1159
+Epoch 1:   3%|▎         | 135/5000 [00:22<13:53,  5.84it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.1187
+Epoch 1:   3%|▎         | 136/5000 [00:22<13:15,  6.12it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0081
+Epoch 1:   3%|▎         | 137/5000 [00:22<12:41,  6.39it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0296
+Epoch 1:   3%|▎         | 138/5000 [00:22<12:13,  6.63it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0296
+Epoch 1:   3%|▎         | 139/5000 [00:22<11:55,  6.79it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.3302
+Epoch 1:   3%|▎         | 140/5000 [00:22<11:51,  6.83it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0014
+Epoch 1:   3%|▎         | 141/5000 [00:23<17:33,  4.61it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0126
+Epoch 1:   3%|▎         | 142/5000 [00:23<15:42,  5.16it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0532
+Epoch 1:   3%|▎         | 143/5000 [00:23<14:23,  5.62it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0094
+Epoch 1:   3%|▎         | 144/5000 [00:23<13:38,  5.93it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.4928
+Epoch 1:   3%|▎         | 145/5000 [00:23<12:59,  6.23it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0062
+Epoch 1:   3%|▎         | 146/5000 [00:24<12:30,  6.47it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 0.1861
+Epoch 1:   3%|▎         | 147/5000 [00:24<12:07,  6.67it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0916
+Epoch 1:   3%|▎         | 148/5000 [00:24<17:09,  4.71it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0343
+Epoch 1:   3%|▎         | 149/5000 [00:24<15:30,  5.21it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0109
+Epoch 1:   3%|▎         | 150/5000 [00:24<14:20,  5.63it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0189
+Epoch 1:   3%|▎         | 151/5000 [00:24<13:32,  5.97it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.1023
+Epoch 1:   3%|▎         | 152/5000 [00:25<13:05,  6.17it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.1863
+Epoch 1:   3%|▎         | 153/5000 [00:25<12:40,  6.37it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0018
+Epoch 1:   3%|▎         | 154/5000 [00:25<12:19,  6.55it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0088
+Epoch 1:   3%|▎         | 155/5000 [00:25<12:13,  6.60it/s][DEBUG] Total masked tokens: 4
+[DEBUG] Logits shape: torch.Size([4, 126464]), Targets shape: torch.Size([4])
+[DEBUG] Avg masked token loss: 0.0004
+Epoch 1:   3%|▎         | 156/5000 [00:25<18:04,  4.46it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.3343
+Epoch 1:   3%|▎         | 157/5000 [00:26<16:17,  4.96it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0039
+Epoch 1:   3%|▎         | 158/5000 [00:26<15:02,  5.36it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0292
+Epoch 1:   3%|▎         | 159/5000 [00:26<14:34,  5.54it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0249
+Epoch 1:   3%|▎         | 160/5000 [00:26<14:18,  5.64it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.1164
+Epoch 1:   3%|▎         | 161/5000 [00:26<13:22,  6.03it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0197
+Epoch 1:   3%|▎         | 162/5000 [00:27<18:24,  4.38it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0093
+Epoch 1:   3%|▎         | 163/5000 [00:27<16:23,  4.92it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0009
+Epoch 1:   3%|▎         | 164/5000 [00:27<15:12,  5.30it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0050
+Epoch 1:   3%|▎         | 165/5000 [00:27<14:02,  5.74it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.2276
+Epoch 1:   3%|▎         | 166/5000 [00:27<13:06,  6.14it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0062
+Epoch 1:   3%|▎         | 167/5000 [00:27<12:25,  6.48it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.4240
+Epoch 1:   3%|▎         | 168/5000 [00:27<12:00,  6.71it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0028
+Epoch 1:   3%|▎         | 169/5000 [00:28<11:44,  6.85it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0691
+Epoch 1:   3%|▎         | 170/5000 [00:28<17:34,  4.58it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0559
+Epoch 1:   3%|▎         | 171/5000 [00:28<15:54,  5.06it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0383
+Epoch 1:   3%|▎         | 172/5000 [00:28<15:02,  5.35it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0014
+Epoch 1:   3%|▎         | 173/5000 [00:28<14:32,  5.53it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0045
+Epoch 1:   3%|▎         | 174/5000 [00:29<13:49,  5.82it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0099
+Epoch 1:   4%|▎         | 175/5000 [00:29<12:52,  6.24it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0206
+Epoch 1:   4%|▎         | 176/5000 [00:29<12:32,  6.41it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0008
+Epoch 1:   4%|▎         | 177/5000 [00:29<18:00,  4.46it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.5911
+Epoch 1:   4%|▎         | 178/5000 [00:29<15:50,  5.07it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0487
+Epoch 1:   4%|▎         | 179/5000 [00:30<14:15,  5.64it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0103
+Epoch 1:   4%|▎         | 180/5000 [00:30<13:15,  6.06it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0317
+Epoch 1:   4%|▎         | 181/5000 [00:30<12:28,  6.44it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0013
+Epoch 1:   4%|▎         | 182/5000 [00:30<12:03,  6.66it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0827
+Epoch 1:   4%|▎         | 183/5000 [00:30<11:50,  6.78it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0012
+Epoch 1:   4%|▎         | 184/5000 [00:30<17:00,  4.72it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0368
+Epoch 1:   4%|▎         | 185/5000 [00:31<15:21,  5.23it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0099
+Epoch 1:   4%|▎         | 186/5000 [00:31<14:10,  5.66it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.1173
+Epoch 1:   4%|▎         | 187/5000 [00:31<13:25,  5.97it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0069
+Epoch 1:   4%|▍         | 188/5000 [00:31<13:05,  6.13it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0058
+Epoch 1:   4%|▍         | 189/5000 [00:31<12:45,  6.28it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.4867
+Epoch 1:   4%|▍         | 190/5000 [00:31<12:28,  6.42it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0316
+Epoch 1:   4%|▍         | 191/5000 [00:31<12:15,  6.53it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0131
+Epoch 1:   4%|▍         | 192/5000 [00:32<17:53,  4.48it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0024
+Epoch 1:   4%|▍         | 193/5000 [00:32<16:17,  4.92it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0359
+Epoch 1:   4%|▍         | 194/5000 [00:32<15:09,  5.28it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0012
+Epoch 1:   4%|▍         | 195/5000 [00:32<14:29,  5.52it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0136
+Epoch 1:   4%|▍         | 196/5000 [00:33<14:15,  5.62it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0022
+Epoch 1:   4%|▍         | 197/5000 [00:33<14:07,  5.67it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0025
+Epoch 1:   4%|▍         | 198/5000 [00:33<19:26,  4.12it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0140
+Epoch 1:   4%|▍         | 199/5000 [00:33<17:12,  4.65it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0200
+Epoch 1:   4%|▍         | 200/5000 [00:33<15:54,  5.03it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.2433
+Epoch 1:   4%|▍         | 201/5000 [00:34<14:59,  5.33it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0029
+Epoch 1:   4%|▍         | 202/5000 [00:34<14:06,  5.66it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 1.0550
+Epoch 1:   4%|▍         | 203/5000 [00:34<13:11,  6.06it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.3943
+Epoch 1:   4%|▍         | 204/5000 [00:34<12:39,  6.31it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.1319
+Epoch 1:   4%|▍         | 205/5000 [00:34<17:57,  4.45it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0492
+Epoch 1:   4%|▍         | 206/5000 [00:35<15:53,  5.03it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.1979
+Epoch 1:   4%|▍         | 207/5000 [00:35<14:25,  5.54it/s][DEBUG] Total masked tokens: 17
+[DEBUG] Logits shape: torch.Size([17, 126464]), Targets shape: torch.Size([17])
+[DEBUG] Avg masked token loss: 0.1501
+Epoch 1:   4%|▍         | 208/5000 [00:35<13:32,  5.89it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0085
+Epoch 1:   4%|▍         | 209/5000 [00:35<12:49,  6.23it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0175
+Epoch 1:   4%|▍         | 210/5000 [00:35<12:15,  6.51it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.3314
+Epoch 1:   4%|▍         | 211/5000 [00:35<11:53,  6.72it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0685
+Epoch 1:   4%|▍         | 212/5000 [00:36<16:56,  4.71it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.9765
+Epoch 1:   4%|▍         | 213/5000 [00:36<15:06,  5.28it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.1234
+Epoch 1:   4%|▍         | 214/5000 [00:36<13:43,  5.81it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0008
+Epoch 1:   4%|▍         | 215/5000 [00:36<12:42,  6.28it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0485
+Epoch 1:   4%|▍         | 216/5000 [00:36<12:08,  6.57it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0046
+Epoch 1:   4%|▍         | 217/5000 [00:36<11:37,  6.85it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.7096
+Epoch 1:   4%|▍         | 218/5000 [00:36<11:13,  7.10it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0467
+Epoch 1:   4%|▍         | 219/5000 [00:36<10:55,  7.29it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0110
+Epoch 1:   4%|▍         | 220/5000 [00:37<16:03,  4.96it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0185
+Epoch 1:   4%|▍         | 221/5000 [00:37<14:22,  5.54it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0020
+Epoch 1:   4%|▍         | 222/5000 [00:37<13:09,  6.05it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0182
+Epoch 1:   4%|▍         | 223/5000 [00:37<12:17,  6.48it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.5167
+Epoch 1:   4%|▍         | 224/5000 [00:37<11:48,  6.74it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0093
+Epoch 1:   4%|▍         | 225/5000 [00:38<11:22,  7.00it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0014
+Epoch 1:   5%|▍         | 226/5000 [00:38<11:01,  7.22it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0090
+Epoch 1:   5%|▍         | 227/5000 [00:38<10:47,  7.37it/s][DEBUG] Total masked tokens: 16
+[DEBUG] Logits shape: torch.Size([16, 126464]), Targets shape: torch.Size([16])
+[DEBUG] Avg masked token loss: 0.0586
+Epoch 1:   5%|▍         | 228/5000 [00:38<16:12,  4.91it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.2172
+Epoch 1:   5%|▍         | 229/5000 [00:38<14:24,  5.52it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0092
+Epoch 1:   5%|▍         | 230/5000 [00:38<13:13,  6.01it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0461
+Epoch 1:   5%|▍         | 231/5000 [00:39<12:19,  6.45it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.1907
+Epoch 1:   5%|▍         | 232/5000 [00:39<11:51,  6.71it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 0.0301
+Epoch 1:   5%|▍         | 233/5000 [00:39<11:23,  6.97it/s][DEBUG] Total masked tokens: 16
+[DEBUG] Logits shape: torch.Size([16, 126464]), Targets shape: torch.Size([16])
+[DEBUG] Avg masked token loss: 0.0646
+Epoch 1:   5%|▍         | 234/5000 [00:39<11:03,  7.18it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 0.0082
+Epoch 1:   5%|▍         | 235/5000 [00:39<10:48,  7.35it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0105
+Epoch 1:   5%|▍         | 236/5000 [00:39<16:33,  4.80it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.1443
+Epoch 1:   5%|▍         | 237/5000 [00:40<14:42,  5.40it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0030
+Epoch 1:   5%|▍         | 238/5000 [00:40<13:21,  5.94it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0854
+Epoch 1:   5%|▍         | 239/5000 [00:40<12:22,  6.41it/s][DEBUG] Total masked tokens: 19
+[DEBUG] Logits shape: torch.Size([19, 126464]), Targets shape: torch.Size([19])
+[DEBUG] Avg masked token loss: 0.1677
+Epoch 1:   5%|▍         | 240/5000 [00:40<11:53,  6.67it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0151
+Epoch 1:   5%|▍         | 241/5000 [00:40<11:23,  6.97it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.2545
+Epoch 1:   5%|▍         | 242/5000 [00:40<11:00,  7.20it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0013
+Epoch 1:   5%|▍         | 243/5000 [00:40<10:45,  7.37it/s][DEBUG] Total masked tokens: 4
+[DEBUG] Logits shape: torch.Size([4, 126464]), Targets shape: torch.Size([4])
+[DEBUG] Avg masked token loss: 0.0021
+Epoch 1:   5%|▍         | 244/5000 [00:41<16:27,  4.82it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0237
+Epoch 1:   5%|▍         | 245/5000 [00:41<14:35,  5.43it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0215
+Epoch 1:   5%|▍         | 246/5000 [00:41<13:14,  5.98it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0116
+Epoch 1:   5%|▍         | 247/5000 [00:41<12:18,  6.43it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0162
+Epoch 1:   5%|▍         | 248/5000 [00:41<11:51,  6.68it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0029
+Epoch 1:   5%|▍         | 249/5000 [00:41<11:24,  6.94it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0002
+Epoch 1:   5%|▌         | 250/5000 [00:41<11:00,  7.19it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0140
+Epoch 1:   5%|▌         | 251/5000 [00:42<10:44,  7.36it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.2001
+Epoch 1:   5%|▌         | 252/5000 [00:42<16:15,  4.87it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0076
+Epoch 1:   5%|▌         | 253/5000 [00:42<14:23,  5.50it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0229
+Epoch 1:   5%|▌         | 254/5000 [00:42<13:09,  6.01it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.1935
+Epoch 1:   5%|▌         | 255/5000 [00:42<12:15,  6.46it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.1511
+Epoch 1:   5%|▌         | 256/5000 [00:42<11:48,  6.69it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0141
+Epoch 1:   5%|▌         | 257/5000 [00:43<11:20,  6.97it/s][DEBUG] Total masked tokens: 3
+[DEBUG] Logits shape: torch.Size([3, 126464]), Targets shape: torch.Size([3])
+[DEBUG] Avg masked token loss: 0.0002
+Epoch 1:   5%|▌         | 258/5000 [00:43<11:00,  7.18it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 0.0184
+Epoch 1:   5%|▌         | 259/5000 [00:43<10:44,  7.36it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.2340
+Epoch 1:   5%|▌         | 260/5000 [00:43<16:09,  4.89it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0578
+Epoch 1:   5%|▌         | 261/5000 [00:43<14:25,  5.48it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0025
+Epoch 1:   5%|▌         | 262/5000 [00:44<13:16,  5.95it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0143
+Epoch 1:   5%|▌         | 263/5000 [00:44<12:26,  6.34it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.2643
+Epoch 1:   5%|▌         | 264/5000 [00:44<12:03,  6.55it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0018
+Epoch 1:   5%|▌         | 265/5000 [00:44<11:40,  6.76it/s][DEBUG] Total masked tokens: 5
+[DEBUG] Logits shape: torch.Size([5, 126464]), Targets shape: torch.Size([5])
+[DEBUG] Avg masked token loss: 0.0075
+Epoch 1:   5%|▌         | 266/5000 [00:44<11:20,  6.96it/s][DEBUG] Total masked tokens: 8
+[DEBUG] Logits shape: torch.Size([8, 126464]), Targets shape: torch.Size([8])
+[DEBUG] Avg masked token loss: 1.1416
+Epoch 1:   5%|▌         | 267/5000 [00:44<11:08,  7.08it/s][DEBUG] Total masked tokens: 15
+[DEBUG] Logits shape: torch.Size([15, 126464]), Targets shape: torch.Size([15])
+[DEBUG] Avg masked token loss: 0.2286
+Epoch 1:   5%|▌         | 268/5000 [00:45<15:34,  5.06it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0206
+Epoch 1:   5%|▌         | 269/5000 [00:45<14:10,  5.56it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0068
+Epoch 1:   5%|▌         | 270/5000 [00:45<13:07,  6.01it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0143
+Epoch 1:   5%|▌         | 271/5000 [00:45<12:19,  6.39it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0023
+Epoch 1:   5%|▌         | 272/5000 [00:45<11:59,  6.57it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0019
+Epoch 1:   5%|▌         | 273/5000 [00:45<11:34,  6.80it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0007
+Epoch 1:   5%|▌         | 274/5000 [00:45<11:16,  6.98it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0673
+Epoch 1:   6%|▌         | 275/5000 [00:45<11:03,  7.12it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0021
+Epoch 1:   6%|▌         | 276/5000 [00:46<15:21,  5.13it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0010
+Epoch 1:   6%|▌         | 277/5000 [00:46<13:57,  5.64it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0381
+Epoch 1:   6%|▌         | 278/5000 [00:46<12:55,  6.09it/s][DEBUG] Total masked tokens: 11
+[DEBUG] Logits shape: torch.Size([11, 126464]), Targets shape: torch.Size([11])
+[DEBUG] Avg masked token loss: 0.0088
+Epoch 1:   6%|▌         | 279/5000 [00:46<12:15,  6.42it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0103
+Epoch 1:   6%|▌         | 280/5000 [00:46<11:54,  6.61it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0019
+Epoch 1:   6%|▌         | 281/5000 [00:46<11:32,  6.82it/s][DEBUG] Total masked tokens: 13
+[DEBUG] Logits shape: torch.Size([13, 126464]), Targets shape: torch.Size([13])
+[DEBUG] Avg masked token loss: 0.0022
+Epoch 1:   6%|▌         | 282/5000 [00:47<11:13,  7.00it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0641
+Epoch 1:   6%|▌         | 283/5000 [00:47<11:01,  7.14it/s][DEBUG] Total masked tokens: 9
+[DEBUG] Logits shape: torch.Size([9, 126464]), Targets shape: torch.Size([9])
+[DEBUG] Avg masked token loss: 0.0274
+Epoch 1:   6%|▌         | 284/5000 [00:47<15:26,  5.09it/s][DEBUG] Total masked tokens: 12
+[DEBUG] Logits shape: torch.Size([12, 126464]), Targets shape: torch.Size([12])
+[DEBUG] Avg masked token loss: 0.0113
+Epoch 1:   6%|▌         | 285/5000 [00:47<14:00,  5.61it/s][DEBUG] Total masked tokens: 7
+[DEBUG] Logits shape: torch.Size([7, 126464]), Targets shape: torch.Size([7])
+[DEBUG] Avg masked token loss: 0.0015
+Epoch 1:   6%|▌         | 286/5000 [00:47<12:58,  6.05it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0778
+Epoch 1:   6%|▌         | 287/5000 [00:47<12:16,  6.40it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.0814
+Epoch 1:   6%|▌         | 288/5000 [00:48<11:56,  6.57it/s][DEBUG] Total masked tokens: 14
+[DEBUG] Logits shape: torch.Size([14, 126464]), Targets shape: torch.Size([14])
+[DEBUG] Avg masked token loss: 0.0063
+Epoch 1:   6%|▌         | 289/5000 [00:48<11:36,  6.76it/s][DEBUG] Total masked tokens: 16
+[DEBUG] Logits shape: torch.Size([16, 126464]), Targets shape: torch.Size([16])
+[DEBUG] Avg masked token loss: 0.0226
+Epoch 1:   6%|▌         | 290/5000 [00:48<11:18,  6.94it/s][DEBUG] Total masked tokens: 10
+[DEBUG] Logits shape: torch.Size([10, 126464]), Targets shape: torch.Size([10])
+[DEBUG] Avg masked token loss: 0.5264
+Epoch 1:   6%|▌         | 291/5000 [00:48<11:05,  7.07it/s][DEBUG] Total masked tokens: 6
+[DEBUG] Logits shape: torch.Size([6, 126464]), Targets shape: torch.Size([6])
+[DEBUG] Avg masked token loss: 0.0038
+Epoch 1:   6%|▌         | 292/5000 [00:48<15:19,  5.12it/s]slurmstepd: error: *** JOB 25835954 ON r815u35n07 CANCELLED AT 2025-04-05T03:06:49 ***
