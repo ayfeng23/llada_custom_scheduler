@@ -1,68 +1,65 @@
-# IMPORTANT: NOT WORKIGN LMAO
-
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoTokenizer, AutoModel
 from peft import PeftModel
+from app import generate_response_with_visualization, format_chat_history  # <-- from your Gradio demo
+import argparse
 
-# ==== Config ====
-base_model_name = "GSAI-ML/LLaDA-8B-Instruct"
-adapter_path = "./llada-lora-sft"  # Path to your fine-tuned LoRA adapter
-prompt = "What's the capital of Italy?"
-max_new_tokens = 64
-
-# ==== Load Tokenizer ====
-print("🔤 Loading tokenizer...")
-tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
-
-# ==== Format Input ====
-input_text = f"<s><|startofuser|>\n{prompt}<|endofuser|><|startofassistant|>\n"
-inputs = tokenizer(input_text, return_tensors="pt")
-
-# ==== Load Base Model ====
-print("🧠 Loading base model...")
-base_model = AutoModelForCausalLM.from_pretrained(
-    base_model_name,
-    trust_remote_code=True,
-    torch_dtype=torch.bfloat16,
-    device_map="auto"
-)
-inputs_base = {k: v.to(base_model.device) for k, v in inputs.items()}
-
-# ==== Generate with Base ====
-print("✨ Generating output from base model...")
-with torch.no_grad():
-    base_output = base_model.generate(
-        **inputs_base,
-        max_new_tokens=max_new_tokens,
-        do_sample=False,
-        use_cache=False,
-        eos_token_id=tokenizer.eos_token_id
+def run_llada_inference(model, tokenizer, device, prompt, label):
+    print(f"🔮 Generating with {label}...")
+    messages = format_chat_history([[prompt, None]])
+    _, response = generate_response_with_visualization(
+        model=model,
+        tokenizer=tokenizer,
+        device=device,
+        messages=messages,
+        gen_length=64,
+        steps=32,
+        temperature=0.7,
+        cfg_scale=0.0,
+        block_length=32,
+        remasking='low_confidence'
     )
-base_decoded = tokenizer.decode(base_output[0], skip_special_tokens=True)
+    return response
 
-# ==== Load Fine-Tuned (LoRA) Model ====
-print("🧪 Loading LoRA fine-tuned model...")
-lora_model = PeftModel.from_pretrained(base_model, adapter_path)
-inputs_lora = {k: v.to(lora_model.device) for k, v in inputs.items()}
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prompt", type=str, default="What's the capital of Italy?")
+    parser.add_argument("--adapter_path", type=str, default="./llada-lora-sft")
+    args = parser.parse_args()
 
-# ==== Generate with Fine-Tuned ====
-print("🔥 Generating output from fine-tuned LoRA model...")
-with torch.no_grad():
-    lora_output = lora_model.generate(
-        **inputs_lora,
-        max_new_tokens=max_new_tokens,
-        do_sample=False,
-        use_cache=False,
-        eos_token_id=tokenizer.eos_token_id
-    )
-lora_decoded = tokenizer.decode(lora_output[0], skip_special_tokens=True)
+    model_id = "GSAI-ML/LLaDA-8B-Instruct"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"🚀 Using device: {device}")
 
-# ==== Print Comparison ====
-print("\n📊 ===================== COMPARISON =====================")
-print(f"📥 Prompt:\n{prompt}")
-print("\n🧠 Base Model Response:\n" + "-" * 40)
-print(base_decoded)
+    # Load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 
-print("\n🔥 Fine-Tuned LoRA Model Response:\n" + "-" * 40)
-print(lora_decoded)
-print("========================================================\n")
+    # Load base model
+    print("🧠 Loading base model...")
+    base_model = AutoModel.from_pretrained(
+        model_id,
+        torch_dtype=torch.bfloat16,
+        trust_remote_code=True
+    ).to(device)
+    base_model.eval()
+
+    # Load LoRA-adapted model
+    print("🌱 Loading fine-tuned LoRA adapter...")
+    lora_model = PeftModel.from_pretrained(base_model, args.adapter_path).to(device)
+    lora_model.eval()
+
+    # Run inference
+    base_response = run_llada_inference(base_model, tokenizer, device, args.prompt, "Base Model")
+    lora_response = run_llada_inference(lora_model, tokenizer, device, args.prompt, "LoRA Fine-Tuned Model")
+
+    # Show results
+    print("\n📊 ========== RESPONSE COMPARISON ==========")
+    print(f"📥 Prompt:\n{args.prompt}\n")
+    print("🧠 Base Model Response:\n" + "-"*40)
+    print(base_response)
+    print("\n🔥 LoRA Fine-Tuned Response:\n" + "-"*40)
+    print(lora_response)
+    print("="*44)
+
+if __name__ == "__main__":
+    main()

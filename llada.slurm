@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --time=02:00:00
+#SBATCH --time=03:00:00
 #SBATCH --output=llada_output.log
 #SBATCH --error=llada_output.log
 
@@ -24,3 +24,4 @@ python -c "import torch; print('Torch version:', torch.__version__)"
 
 echo "🚀 Launching Gradio app"
 /home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora.py
+# /home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/finetuned_test.py --prompt "What's the capital of Italy?"

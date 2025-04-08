@@ -6,6 +6,7 @@ from peft import LoraConfig, get_peft_model
 from tqdm import tqdm
 import argparse
 import wandb
+import random
 
 MASK_TOKEN_ID = 126336  # [MASK] token for LLaDA
 
@@ -30,13 +31,15 @@ class SFTDataset(Dataset):
 
         # Load and filter raw TULU data
         ds = load_dataset("allenai/llama-3-tulu-v2-sft-subset")["raw"]
+        print("Length before filtering: ", len(ds))
         ds = ds.filter(is_valid)
         ds = ds.filter(lambda ex: len(ex["messages"]) >= 2 
                                   and ex["messages"][0]["role"] == "user" 
                                   and ex["messages"][1]["role"] == "assistant" 
                                   and ex["messages"][1]["content"].strip() != "")
 
-        ds = ds.select(range(5000))
+        print("Length before filtering: ", len(ds))
+        ds = ds.select(range(10000))
 
         # Convert each example into tokenized input
         for ex in ds:
@@ -73,9 +76,9 @@ class SFTDataset(Dataset):
         return self.samples[idx]
 
 
-
-def forward_process(input_ids, mask_prob=0.15, mask_token_id=MASK_TOKEN_ID):
-    p_mask = (torch.rand_like(input_ids.float()) < mask_prob)
+def forward_process(input_ids, mask_token_id=MASK_TOKEN_ID):
+    t = random.uniform(0, 1)
+    p_mask = (torch.rand_like(input_ids.float()) < t)
     noisy_input = input_ids.clone()
     noisy_input[p_mask] = mask_token_id
     return noisy_input, p_mask
