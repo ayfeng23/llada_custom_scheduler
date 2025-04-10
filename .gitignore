@@ -1,3 +1,9 @@
-llada-lora-sft/
-wandb/
+# Ignore specific files
 llada_output.log
+scheduled_sampling.ipynb
+analyze_vocab.ipynb
+LLaDA/wiki_tfidf_terms.csv
+
+# Ignore directories
+wandb/
+llada-lora-sft/

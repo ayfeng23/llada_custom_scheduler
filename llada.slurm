@@ -1,14 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=llada-a100
-#SBATCH --partition=scavenge
+#SBATCH --partition=gpu_devel
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --time=03:00:00
+#SBATCH --time=01:10:00
 #SBATCH --output=llada_output.log
 #SBATCH --error=llada_output.log
-
-# SBATCH --nodelist=r815u35n07  # uncomment if you want to pin to a specific one
 
 
 export PYTHONUNBUFFERED=1
@@ -23,5 +21,5 @@ echo "🔥 Trying to import torch..."
 python -c "import torch; print('Torch version:', torch.__version__)"
 
 echo "🚀 Launching Gradio app"
-/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora.py
+/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora_sched_masking.py
 # /home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/finetuned_test.py --prompt "What's the capital of Italy?"
