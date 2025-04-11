@@ -7,3 +7,5 @@ LLaDA/wiki_tfidf_terms.csv
 # Ignore directories
 wandb/
 llada-lora-sft/
+llada-lora-sft-baseline/
+llada-lora-sft-masking-sched/

@@ -21,5 +21,4 @@ echo "🔥 Trying to import torch..."
 python -c "import torch; print('Torch version:', torch.__version__)"
 
 echo "🚀 Launching Gradio app"
-/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora_sched_masking.py
-# /home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/finetuned_test.py --prompt "What's the capital of Italy?"
+/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora_sched_masking.py --baseline

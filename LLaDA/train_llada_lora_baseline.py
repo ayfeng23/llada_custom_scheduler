@@ -7,13 +7,14 @@ from tqdm import tqdm
 import argparse
 import wandb
 import random
+from scipy.stats import beta
+import numpy as np
+from datasets import load_dataset
+import pandas as pd
+from wordfreq import word_frequency
+
 
 MASK_TOKEN_ID = 126336  # [MASK] token for LLaDA
-
-
-from datasets import load_dataset
-from torch.utils.data import Dataset
-import torch
 
 def is_valid(example):
     messages = example["messages"]
@@ -25,12 +26,12 @@ def is_valid(example):
     )
 
 class SFTDataset(Dataset):
-    def __init__(self, tokenizer, max_len=512):
+    def __init__(self, tokenizer, sect, max_len=512):
         self.samples = []
         self.tokenizer = tokenizer
 
         # Load and filter raw TULU data
-        ds = load_dataset("allenai/llama-3-tulu-vxf2-sft-subset")["raw"]
+        ds = load_dataset("allenai/llama-3-tulu-v2-sft-subset")["raw"]
         print("Length before filtering: ", len(ds))
         ds = ds.filter(is_valid)
         ds = ds.filter(lambda ex: len(ex["messages"]) >= 2 
@@ -39,7 +40,10 @@ class SFTDataset(Dataset):
                                   and ex["messages"][1]["content"].strip() != "")
 
         print("Length before filtering: ", len(ds))
-        ds = ds.select(range(10000))
+        if sect == "train":
+            ds = ds.select(range(1000))
+        else:
+            ds = ds.select(range(1000, len(ds)))
 
         # Convert each example into tokenized input
         for ex in ds:
@@ -161,7 +165,7 @@ def train(args):
 
     model.print_trainable_parameters()
 
-    dataset = SFTDataset(tokenizer, max_len=args.max_seq_len)
+    dataset = SFTDataset(tokenizer, sect="train", max_len=args.max_seq_len)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
@@ -216,7 +220,7 @@ def train(args):
     print("Starting evaluation")
     model.eval()
     eval_dataset = SFTDataset(tokenizer, sect="test", max_len=args.max_seq_len)
-    eval_dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
+    eval_dataloader = DataLoader(eval_dataset, batch_size=args.batch_size, shuffle=False)
 
     total_eval_loss = 0.0
     total_eval_tokens = 0

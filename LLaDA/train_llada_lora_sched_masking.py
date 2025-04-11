@@ -12,6 +12,7 @@ import numpy as np
 from datasets import load_dataset
 import pandas as pd
 from wordfreq import word_frequency
+import argparse
 
 
 MASK_TOKEN_ID = 126336  # [MASK] token for LLaDA
@@ -72,7 +73,6 @@ class SFTDataset(Dataset):
         self.samples = []
         self.tokenizer = tokenizer
 
-        # Load and filter raw TULU data
         ds = load_dataset("allenai/llama-3-tulu-v2-sft-subset")["raw"]
         print("Length before filtering: ", len(ds))
         ds = ds.filter(is_valid)
@@ -81,38 +81,35 @@ class SFTDataset(Dataset):
                                   and ex["messages"][1]["role"] == "assistant" 
                                   and ex["messages"][1]["content"].strip() != "")
 
-        print("Length before filtering: ", len(ds))
+        print("Length after filtering: ", len(ds))
         if sect == "train":
             ds = ds.select(range(10000))
         else:
             ds = ds.select(range(10000, len(ds)))
 
-        # Convert each example into tokenized input
         for ex in ds:
             prompt = ex["messages"][0]["content"]
             answer = ex["messages"][1]["content"]
 
-            # Format with chat-style template
-            full_text = (
-                "<s><|startofuser|>\n" + prompt +
-                "<|endofuser|><|startofassistant|>\n" + answer +
-                "<|endoftext|>"
-            )
-            prompt_text = (
-                "<s><|startofuser|>\n" + prompt +
-                "<|endofuser|><|startofassistant|>\n"
-            )
+            prompt_text = "<s><|startofuser|>\n" + prompt + "<|endofuser|><|startofassistant|>\n"
+            answer_text = answer + "<|endoftext|>"
 
-            input_ids = tokenizer(full_text, return_tensors="pt", truncation=True, max_length=max_len).input_ids[0]
-            prompt_len = tokenizer(prompt_text, return_tensors="pt", truncation=True, max_length=max_len).input_ids.shape[1]
+            prompt_ids = tokenizer(prompt_text, return_tensors="pt", truncation=True, max_length=max_len).input_ids[0]
+            answer_ids = tokenizer(answer_text, return_tensors="pt", truncation=True, max_length=max_len).input_ids[0]
 
-            pad_len = max(0, max_len - input_ids.shape[0])
+            # Merge and pad
+            input_ids = torch.cat([prompt_ids, answer_ids])
+            input_ids = input_ids[:max_len]
+            pad_len = max_len - input_ids.size(0)
             if pad_len > 0:
-                input_ids = torch.cat([input_ids, torch.tensor([tokenizer.eos_token_id] * pad_len)])
+                input_ids = torch.cat([input_ids, torch.tensor([tokenizer.pad_token_id] * pad_len)])
 
             self.samples.append({
                 "input_ids": input_ids,
-                "prompt_length": torch.tensor(prompt_len)
+                "prompt_length": torch.tensor(len(prompt_ids)),
+                "answer_length": torch.tensor(len(answer_ids)),
+                "prompt_ids": prompt_ids,
+                "answer_ids": answer_ids
             })
 
     def __len__(self):
@@ -122,9 +119,8 @@ class SFTDataset(Dataset):
         return self.samples[idx]
 
 
-def timestep_schedule(step, total_steps, gamma=4.0):
-    """ Returns a timestep t ~ Beta(a, b) that shifts right over time. """
 
+def timestep_schedule():
     t = random.uniform(0,1)
     return t
 
@@ -134,12 +130,6 @@ def timestep_schedule(step, total_steps, gamma=4.0):
     #     t = random.uniform(0.8, 1)
     # else:
     #     t = random.uniform(0, 1)
-
-    # progress = step / total_steps
-    # # Higher gamma = more right-shifted → more late-timestep training
-    # a = 1 + gamma * progress
-    # b = 1 + gamma * (1 - progress)
-    # return beta.rvs(a, b)
 
     return t
 
@@ -162,6 +152,7 @@ def sampling_schedule(step, total_steps, schedule_type='inv_sigmoid', k=7.0, t=1
 
 
 def orig_forward_process(input_ids, mask_prob, mask_token_id=MASK_TOKEN_ID):
+    print("Running Original Forward Process")
     t = mask_prob
     p_mask = (torch.rand_like(input_ids.float()) < t)
     noisy_input = input_ids.clone()
@@ -170,12 +161,13 @@ def orig_forward_process(input_ids, mask_prob, mask_token_id=MASK_TOKEN_ID):
 
 def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
                         mask_token_id=MASK_TOKEN_ID, temperature=0.4, gamma=4.0):
+    print("Running New Forward Process")
     device = input_ids.device
     token_ids = input_ids.cpu().numpy()  # (B, L)
     priorities = tokenid_to_priority[token_ids]  # (B, L)
 
     use_uniform = np.random.rand() < temperature
-    k = int(mask_prob * token_ids.shape[1])
+
     if use_uniform:
         timestamps = np.random.rand(*token_ids.shape)  # shape (B, L)
     else:
@@ -184,16 +176,26 @@ def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
         timestamps = beta.rvs(a, b, size=token_ids.shape)
 
     sorted_indices = np.argsort(timestamps, axis=1)  # (B, L)
+
+    mat_to_mask = np.random.rand(*token_ids.shape)
+    num_mask = (mat_to_mask < mask_prob).sum(axis=1)
+
     B, L = sorted_indices.shape
-    row_idx = np.arange(B)[:, None]  # shape (B, 1)
-    col_idx = sorted_indices[:, :k]  # shape (B, k)
-    
+    row_idx = np.repeat(np.arange(B), num_mask)
+
+    # Gather all the col indices into one flat array
+    col_idx = np.concatenate([
+        sorted_indices[i, :k] for i, k in enumerate(num_mask)
+    ])
+   
+    # Now assign
     mask_flags = np.zeros_like(sorted_indices, dtype=bool)
     mask_flags[row_idx, col_idx] = True
-        
+
     p_mask = torch.from_numpy(mask_flags).to(device=input_ids.device)
     noisy_input = input_ids.clone()
     noisy_input[p_mask] = mask_token_id
+
     return noisy_input, p_mask, sorted_indices
 
 def forward_process(input_ids, mask_prob, step, total_steps, tokenid_to_priority, mask_token_id=MASK_TOKEN_ID, temperature=0.3):
@@ -207,34 +209,6 @@ def forward_process(input_ids, mask_prob, step, total_steps, tokenid_to_priority
 
     return noisy_input, p_mask, sorted_indices
 
-
-def forward_process_answer_only(input_ids, prompt_lengths, mask_prob, step, total_steps, tokenid_to_priority, mask_token_id=MASK_TOKEN_ID, temperature=0.3):
-    B, L = input_ids.shape
-    device = input_ids.device
-
-    noisy_input = input_ids.clone()
-    p_mask = torch.zeros_like(input_ids, dtype=torch.bool)
-
-    for b in range(B):
-        prompt_len = prompt_lengths[b].item()
-        answer_ids = input_ids[b, prompt_len:]
-
-        # Apply forward_process only on answer part
-        noisy_answer, mask_flags, _ = forward_process(
-            input_ids=answer_ids.unsqueeze(0),
-            mask_prob=mask_prob,
-            step=step,
-            total_steps=total_steps,
-            tokenid_to_priority=tokenid_to_priority,
-            mask_token_id=mask_token_id,
-            temperature=temperature
-        )
-
-        # Replace answer portion with noisy version
-        noisy_input[b, prompt_len:] = noisy_answer.squeeze(0)
-        p_mask[b, prompt_len:] = mask_flags.squeeze(0)
-
-    return noisy_input, p_mask, None
 
 
 def compute_llada_sft_loss(logits, input_ids, p_mask, prompt_lengths):
@@ -252,20 +226,20 @@ def compute_llada_sft_loss(logits, input_ids, p_mask, prompt_lengths):
     """
     device = input_ids.device
 
-    # Compute mask for where prediction should happen
-    masked_indices = p_mask.bool()  # shape: (batch, seq_len)
+    # Exclude masked PAD tokens
+    pad_mask = input_ids != tokenizer.pad_token_id
+    masked_indices = p_mask.bool() & pad_mask  # (batch, seq_len)
 
-    # Debug: total masked tokens
     total_masked = masked_indices.sum().item()
-    print(f"[DEBUG] Total masked tokens: {total_masked}")
+    print(f"[DEBUG] Total masked (non-PAD) tokens: {total_masked}")
 
     if total_masked == 0:
         print("[WARNING] No masked tokens found — returning zero loss.")
         return torch.tensor(0.0, device=device, requires_grad=True)
 
-    # Flatten for loss computation
-    logits = logits[masked_indices]           # (num_masked, vocab)
-    targets = input_ids[masked_indices]       # (num_masked,)
+    logits = logits[masked_indices]      # (num_masked, vocab)
+    targets = input_ids[masked_indices]  # (num_masked,)
+
 
     # Check shapes
     print(f"[DEBUG] Logits shape: {logits.shape}, Targets shape: {targets.shape}")
@@ -284,18 +258,32 @@ def train(args):
     if device == "cuda":
         torch.backends.cuda.matmul.allow_tf32 = True
 
-    wandb.init(
-        project="llada-lora-finetuning",
-        name="llada-finetuning-scheduled-masking-unif-timesteps",
-        config={
-            "model_name": args.model_name,
-            "batch_size": args.batch_size,
-            "epochs": args.epochs,
-            "learning_rate": args.lr,
-            "max_seq_len": args.max_seq_len,
-            "gradient_accumulation_steps": args.gradient_accumulation_steps
-        }
-    )
+    if args.baseline:
+        wandb.init(
+            project="llada-lora-finetuning",
+            name="llada-finetuning-baseline",
+            config={
+                "model_name": args.model_name,
+                "batch_size": args.batch_size,
+                "epochs": args.epochs,
+                "learning_rate": args.lr,
+                "max_seq_len": args.max_seq_len,
+                "gradient_accumulation_steps": args.gradient_accumulation_steps
+            }
+        )
+    else:
+        wandb.init(
+            project="llada-lora-finetuning",
+            name="llada-finetuning-scheduled-masking",
+            config={
+                "model_name": args.model_name,
+                "batch_size": args.batch_size,
+                "epochs": args.epochs,
+                "learning_rate": args.lr,
+                "max_seq_len": args.max_seq_len,
+                "gradient_accumulation_steps": args.gradient_accumulation_steps
+            }
+        )        
 
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, trust_remote_code=True)
@@ -331,29 +319,44 @@ def train(args):
         total_loss = 0.0
 
         for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch+1}")):
-            input_ids = batch["input_ids"].to(device)
-            prompt_lengths = batch["prompt_length"].to(device)
+            t = timestep_schedule()
+            prompt_ids = batch["prompt_ids"].to(device)
+            answer_ids = batch["answer_ids"].to(device)
 
 
-            # t = random.uniform(0,1)
-            t = timestep_schedule(step_count, total_steps, gamma=4.0)
+            if args.baseline:
+                temperature = 1
 
-            noisy_batch, p_mask, _ = forward_process_answer_only(
-                input_ids=input_ids,
-                prompt_lengths=prompt_lengths,
+            noisy_answer, p_mask, _ = forward_process(
+                input_ids=answer_ids,
                 mask_prob=t,
                 step=step_count,
                 total_steps=total_steps,
                 tokenid_to_priority=tokenid_to_priority,
-                mask_token_id=MASK_TOKEN_ID
+                mask_token_id=MASK_TOKEN_ID,
+                temperature=temperature
             )
-            # token_positions = torch.arange(input_ids.shape[1], device=input_ids.device).unsqueeze(0)
-            # prompt_mask = token_positions < prompt_lengths.unsqueeze(1)
-            # noisy_batch[prompt_mask] = input_ids[prompt_mask]
+
+            # Reconstruct full input
+            noisy_batch = torch.cat([prompt_ids, noisy_answer], dim=1)
+            input_ids = torch.cat([prompt_ids, answer_ids], dim=1)
+            prompt_lengths = batch["prompt_length"].to(device)
+            # Build p_mask aligned with full input
+            full_mask = torch.zeros_like(noisy_batch, dtype=torch.bool)
+            for b in range(noisy_batch.size(0)):
+                full_mask[b, prompt_lengths[b]:] = p_mask[b]
+
+            print("DEBUGGING OCCURING HERE:")
+            print("MASK PROB: ", t)
+            decoded_noisy = tokenizer.batch_decode(noisy_batch, skip_special_tokens=False)
+            for i, decoded in enumerate(decoded_noisy):
+                print(f"[Batch {i}] {decoded}\n{'-'*60}")
+            print(p_mask.int())  # 1 where masked, 0 elsewhere
+            print("DEBUGGING FINISHED")
 
             with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
                 outputs = model(input_ids=noisy_batch)
-                loss = compute_llada_sft_loss(outputs.logits, input_ids, p_mask, prompt_lengths)
+                loss = compute_llada_sft_loss(outputs.logits, input_ids, full_mask, prompt_lengths)
 
             loss = loss / args.gradient_accumulation_steps
             loss.backward()
@@ -433,10 +436,19 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--lr", type=float, default=2e-4)
-    parser.add_argument("--output_dir", type=str, default="./llada-lora-sft-masking-sched")
     parser.add_argument("--max_seq_len", type=int, default=64)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
+    parser.add_argument('--baseline', action='store_true', help='Enable baseline mode.')
+    parser.add_argument("--output_dir", type=str, default=None)
 
     args = parser.parse_args()
-    train(args)
 
+    if args.output_dir is None:
+        if args.baseline:
+            print("Running Baseline Uniform Masking")
+            args.output_dir = "./llada-lora-sft-baseline"
+        else:
+            print("Running Custom Masking Schedule")
+            args.output_dir = "./llada-lora-sft-masking-sched"
+
+    train(args)
