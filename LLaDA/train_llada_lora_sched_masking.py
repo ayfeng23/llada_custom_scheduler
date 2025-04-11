@@ -121,15 +121,15 @@ class SFTDataset(Dataset):
 
 
 def timestep_schedule():
-    t = random.uniform(0,1)
-    return t
+    # t = random.uniform(0,1)
+    # return t
 
-    # rand_num = random.uniform(0,1)
-    # t = 0
-    # if rand_num >= 0.75:
-    #     t = random.uniform(0.8, 1)
-    # else:
-    #     t = random.uniform(0, 1)
+    rand_num = random.uniform(0,1)
+    t = 0
+    if rand_num >= 0.75:
+        t = random.uniform(0.8, 1)
+    else:
+        t = random.uniform(0, 1)
 
     return t
 
@@ -160,8 +160,8 @@ def orig_forward_process(input_ids, mask_prob, mask_token_id=MASK_TOKEN_ID):
     return noisy_input, p_mask, None
 
 def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
-                        mask_token_id=MASK_TOKEN_ID, temperature=0.4, gamma=4.0):
-    print("Running New Forward Process")
+                        mask_token_id=MASK_TOKEN_ID, temperature=0.3, gamma=4.0):
+    # print("Running New Forward Process")
     device = input_ids.device
     token_ids = input_ids.cpu().numpy()  # (B, L)
     priorities = tokenid_to_priority[token_ids]  # (B, L)
@@ -169,11 +169,14 @@ def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
     use_uniform = np.random.rand() < temperature
 
     if use_uniform:
-        timestamps = np.random.rand(*token_ids.shape)  # shape (B, L)
+        return orig_forward_process(input_ids, mask_prob, mask_token_id=MASK_TOKEN_ID)
+        # timestamps = np.random.rand(*token_ids.shape)  # shape (B, L)
     else:
         a = 1 + gamma * priorities
         b = 1 + gamma * (1 - priorities)
         timestamps = beta.rvs(a, b, size=token_ids.shape)
+
+    print("Running New Forward Process")
 
     sorted_indices = np.argsort(timestamps, axis=1)  # (B, L)
 
@@ -199,7 +202,9 @@ def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
     return noisy_input, p_mask, sorted_indices
 
 def forward_process(input_ids, mask_prob, step, total_steps, tokenid_to_priority, mask_token_id=MASK_TOKEN_ID, temperature=0.3):
+    
     p = sampling_schedule(step, total_steps)
+    print("Sampling Schedule Degbugging", step, p)
     if np.random.rand() < p:
         #print("Original Forward Process")
         noisy_input, p_mask, sorted_indices = orig_forward_process(input_ids, mask_prob, mask_token_id=mask_token_id)
@@ -326,11 +331,13 @@ def train(args):
 
             if args.baseline:
                 temperature = 1
+            else:
+                temperature = 0.3
 
             noisy_answer, p_mask, _ = forward_process(
                 input_ids=answer_ids,
                 mask_prob=t,
-                step=step_count,
+                step=i,
                 total_steps=total_steps,
                 tokenid_to_priority=tokenid_to_priority,
                 mask_token_id=MASK_TOKEN_ID,
@@ -348,15 +355,20 @@ def train(args):
 
             print("DEBUGGING OCCURING HERE:")
             print("MASK PROB: ", t)
+            decoded_gt = tokenizer.batch_decode(answer_ids, skip_special_tokens=False)
+            for j in range(len(decoded_gt)):
+                print(f"[Batch {j}] ORIGINAL ANSWER {decoded_gt[j]}\n{'-'*60}")
+            print()
+
             decoded_noisy = tokenizer.batch_decode(noisy_batch, skip_special_tokens=False)
-            for i, decoded in enumerate(decoded_noisy):
-                print(f"[Batch {i}] {decoded}\n{'-'*60}")
+            for j, decoded in enumerate(decoded_noisy):
+                print(f"[Batch {j}] MASKED ANSWER {decoded}\n{'-'*60}")
             print(p_mask.int())  # 1 where masked, 0 elsewhere
             print("DEBUGGING FINISHED")
 
             with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
                 outputs = model(input_ids=noisy_batch)
-                loss = compute_llada_sft_loss(outputs.logits, input_ids, full_mask, prompt_lengths)
+                loss = compute_llada_sft_loss(outputs.logits, input_ids, full_mask, prompt_lengths)            
 
             loss = loss / args.gradient_accumulation_steps
             loss.backward()
@@ -449,6 +461,7 @@ if __name__ == "__main__":
             args.output_dir = "./llada-lora-sft-baseline"
         else:
             print("Running Custom Masking Schedule")
-            args.output_dir = "./llada-lora-sft-masking-sched"
+            # args.output_dir = "./llada-lora-sft-masking-sched"
+            args.output_dir = "./llada-lora-sft-masking-sched-weighted-timesteps"
 
     train(args)
