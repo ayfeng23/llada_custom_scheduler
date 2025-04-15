@@ -1,8 +1,11 @@
 # Ignore specific files
-llada_output.log
+llada_baseline_output.log
+llada_sched_output.log
+llada_sched_output_weighted_timestep.log
 scheduled_sampling.ipynb
 analyze_vocab.ipynb
 LLaDA/wiki_tfidf_terms.csv
+val_test.log
 
 # Ignore directories
 wandb/

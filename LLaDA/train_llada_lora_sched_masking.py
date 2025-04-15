@@ -45,7 +45,7 @@ def create_idf_dict():
     idf_lookup = dict(zip(idf_df['token'].str.lower(), idf_df['idf_norm']))
     idf_dict = {}
     for token, token_id in vocab_dict.items():
-        token_clean = token.lower().lstrip("Ġ")  # remove BPE space if any
+        token_clean = (token.lstrip("Ġ")).lower()  # remove BPE space if any
         idf_dict[(token, token_id)] = idf_lookup.get(token_clean, mean_idf_norm)
 
     return idf_dict
@@ -73,7 +73,8 @@ class SFTDataset(Dataset):
         self.samples = []
         self.tokenizer = tokenizer
 
-        ds = load_dataset("allenai/llama-3-tulu-v2-sft-subset")["raw"]
+        # ds = load_dataset("allenai/llama-3-tulu-v2-sft-subset")["raw"]
+        ds = load_dataset("HuggingFaceTB/smoltalk", "all")["train"]
         print("Length before filtering: ", len(ds))
         ds = ds.filter(is_valid)
         ds = ds.filter(lambda ex: len(ex["messages"]) >= 2 
@@ -83,9 +84,11 @@ class SFTDataset(Dataset):
 
         print("Length after filtering: ", len(ds))
         if sect == "train":
-            ds = ds.select(range(10000))
-        else:
-            ds = ds.select(range(10000, len(ds)))
+            ds = ds.select(range(60000))
+        elif sect == "test":
+            ds = ds.select(range(60000, 68000))
+        elif sect == "validate":
+            ds = ds.select(range(68000, len(ds)))
 
         for ex in ds:
             prompt = ex["messages"][0]["content"]
@@ -120,16 +123,16 @@ class SFTDataset(Dataset):
 
 
 
-def timestep_schedule():
-    # t = random.uniform(0,1)
-    # return t
-
-    rand_num = random.uniform(0,1)
+def timestep_schedule(args):
     t = 0
-    if rand_num >= 0.75:
-        t = random.uniform(0.8, 1)
+    if args.weighted:
+        rand_num = random.uniform(0,1)
+        if rand_num >= 0.75:
+            t = random.uniform(0.8, 1)
+        else:
+            t = random.uniform(0, 1)
     else:
-        t = random.uniform(0, 1)
+        t = random.uniform(0,1)
 
     return t
 
@@ -236,23 +239,21 @@ def compute_llada_sft_loss(logits, input_ids, p_mask, prompt_lengths):
     masked_indices = p_mask.bool() & pad_mask  # (batch, seq_len)
 
     total_masked = masked_indices.sum().item()
-    print(f"[DEBUG] Total masked (non-PAD) tokens: {total_masked}")
+    # print(f"[DEBUG] Total masked (non-PAD) tokens: {total_masked}")
 
     if total_masked == 0:
-        print("[WARNING] No masked tokens found — returning zero loss.")
+        # print("[WARNING] No masked tokens found — returning zero loss.")
         return torch.tensor(0.0, device=device, requires_grad=True)
 
     logits = logits[masked_indices]      # (num_masked, vocab)
     targets = input_ids[masked_indices]  # (num_masked,)
 
 
-    # Check shapes
-    print(f"[DEBUG] Logits shape: {logits.shape}, Targets shape: {targets.shape}")
+    # print(f"[DEBUG] Logits shape: {logits.shape}, Targets shape: {targets.shape}")
 
-    # Compute per-token cross-entropy loss
     token_loss = F.cross_entropy(logits, targets, reduction="mean")
 
-    print(f"[DEBUG] Avg masked token loss: {token_loss.item():.4f}")
+    # print(f"[DEBUG] Avg masked token loss: {token_loss.item():.4f}")
     return token_loss
 
 
@@ -263,32 +264,28 @@ def train(args):
     if device == "cuda":
         torch.backends.cuda.matmul.allow_tf32 = True
 
-    if args.baseline:
-        wandb.init(
-            project="llada-lora-finetuning",
-            name="llada-finetuning-baseline",
-            config={
-                "model_name": args.model_name,
-                "batch_size": args.batch_size,
-                "epochs": args.epochs,
-                "learning_rate": args.lr,
-                "max_seq_len": args.max_seq_len,
-                "gradient_accumulation_steps": args.gradient_accumulation_steps
-            }
-        )
+    if args.baseline and args.weighted:
+        name = "llada-finetuning-baseline-weighted"
+    elif not args.baseline and args.weighted:
+        name = "llada-finetuning-scheduled-masking-weighted"
+    elif args.baseline and not args.weighted:
+        name = "llada-finetuning-baseline-uniform"
     else:
-        wandb.init(
-            project="llada-lora-finetuning",
-            name="llada-finetuning-scheduled-masking",
-            config={
-                "model_name": args.model_name,
-                "batch_size": args.batch_size,
-                "epochs": args.epochs,
-                "learning_rate": args.lr,
-                "max_seq_len": args.max_seq_len,
-                "gradient_accumulation_steps": args.gradient_accumulation_steps
-            }
-        )        
+        name = "llada-finetuning-scheduled-masking-uniform"
+
+    wandb.init(
+        project="llada-lora-finetuning",
+        name=name,
+        config={
+            "model_name": args.model_name,
+            "batch_size": args.batch_size,
+            "epochs": args.epochs,
+            "learning_rate": args.lr,
+            "max_seq_len": args.max_seq_len,
+            "gradient_accumulation_steps": args.gradient_accumulation_steps
+        }
+    )
+ 
 
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, trust_remote_code=True)
@@ -313,6 +310,9 @@ def train(args):
     dataset = SFTDataset(tokenizer, sect="train", max_len=args.max_seq_len)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
+    val_dataset = SFTDataset(tokenizer, sect="validate", max_len=args.max_seq_len)
+    val_dataloader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=True)
+
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
     total_steps = len(dataloader) * args.epochs // args.gradient_accumulation_steps
     lr_scheduler = get_scheduler("linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=total_steps)
@@ -322,9 +322,10 @@ def train(args):
 
     for epoch in range(args.epochs):
         total_loss = 0.0
+        running_loss = 0.0
 
         for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch+1}")):
-            t = timestep_schedule()
+            t = timestep_schedule(args)
             prompt_ids = batch["prompt_ids"].to(device)
             answer_ids = batch["answer_ids"].to(device)
 
@@ -353,22 +354,36 @@ def train(args):
             for b in range(noisy_batch.size(0)):
                 full_mask[b, prompt_lengths[b]:] = p_mask[b]
 
-            print("DEBUGGING OCCURING HERE:")
-            print("MASK PROB: ", t)
+            # print("DEBUGGING OCCURING HERE:")
+            # print("MASK PROB: ", t)
             decoded_gt = tokenizer.batch_decode(answer_ids, skip_special_tokens=False)
-            for j in range(len(decoded_gt)):
-                print(f"[Batch {j}] ORIGINAL ANSWER {decoded_gt[j]}\n{'-'*60}")
-            print()
+            # for j in range(len(decoded_gt)):
+            #     print(f"[Batch {j}] ORIGINAL ANSWER {decoded_gt[j]}\n{'-'*60}")
+            # print()
 
             decoded_noisy = tokenizer.batch_decode(noisy_batch, skip_special_tokens=False)
-            for j, decoded in enumerate(decoded_noisy):
-                print(f"[Batch {j}] MASKED ANSWER {decoded}\n{'-'*60}")
-            print(p_mask.int())  # 1 where masked, 0 elsewhere
-            print("DEBUGGING FINISHED")
+            # for j, decoded in enumerate(decoded_noisy):
+            #     print(f"[Batch {j}] MASKED ANSWER {decoded}\n{'-'*60}")
+            # print(p_mask.int())  # 1 where masked, 0 elsewhere
+            # print("DEBUGGING FINISHED")
 
             with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
                 outputs = model(input_ids=noisy_batch)
-                loss = compute_llada_sft_loss(outputs.logits, input_ids, full_mask, prompt_lengths)            
+                loss = compute_llada_sft_loss(outputs.logits, input_ids, full_mask, prompt_lengths)   
+
+            # # Get logits and predictions
+            # logits = outputs.logits  # shape: (batch_size, seq_len, vocab_size)
+            # pred_ids = torch.argmax(logits, dim=-1)  # shape: (batch_size, seq_len)
+
+            # # Only get answer portion for each sample
+            # for b in range(pred_ids.size(0)):
+            #     answer_start = prompt_lengths[b].item()
+            #     predicted_tokens = pred_ids[b, answer_start:]
+            #     decoded_pred = tokenizer.decode(predicted_tokens.cpu(), skip_special_tokens=False)
+
+            #     print(f"\n🔮 [DEBUG] Batch {b} Predicted token IDs (answer part):")
+            #     print(predicted_tokens.tolist())
+            #     print(f"📝 [DEBUG] Batch {b} Decoded predicted answer:\n{decoded_pred}")         
 
             loss = loss / args.gradient_accumulation_steps
             loss.backward()
@@ -379,7 +394,51 @@ def train(args):
                 optimizer.zero_grad()
                 step_count += 1
 
+                if step_count % 100 == 0:
+                    avg_loss_100 = running_loss / 100
+                    print(f"📉 [Train] Step: {step_count} | Avg Loss (last 100 steps): {avg_loss_100:.4f}")
+                    wandb.log({"train/loss_100step_avg": avg_loss_100})
+                    running_loss = 0
+
+                if step_count % 500 == 0:
+                    print(f"\n🔍 Running validation at step {step_count}...")
+                    model.eval()
+                    total_val_loss = 0.0
+                    total_val_tokens = 0
+
+                    with torch.no_grad():
+                        for val_batch in val_dataloader:
+
+                            input_ids = val_batch["input_ids"].to(device)
+                            prompt_lengths = val_batch["prompt_length"].to(device)
+
+                            p_mask = torch.zeros_like(input_ids, dtype=torch.bool)
+                            for b in range(input_ids.size(0)):
+                                p_mask[b, prompt_lengths[b]:] = 1
+
+                            noisy_input = input_ids.clone()
+                            noisy_input[p_mask] = MASK_TOKEN_ID
+
+                            with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
+                                outputs = model(input_ids=noisy_input)
+                                loss = compute_llada_sft_loss(outputs.logits, input_ids, p_mask, prompt_lengths)
+
+                            total_val_loss += loss.item() * p_mask.sum().item()
+                            total_val_tokens += p_mask.sum().item()
+
+                        avg_val_loss = total_val_loss / total_val_tokens if total_val_tokens > 0 else 0.0
+                        val_perplexity = np.exp(avg_val_loss) if avg_val_loss < 100 else float('inf')
+
+                        print(f"✅ [Validation] Step: {step_count} | Avg Loss: {avg_val_loss:.4f} | Perplexity: {val_perplexity:.2f} | Tokens Evaluated: {total_val_tokens}")
+                        wandb.log({
+                            "val/loss": avg_val_loss,
+                            "val/perplexity": np.exp(avg_val_loss),
+                            "train/step": step_count
+                        })
+                    model.train()
+
             total_loss += loss.item()
+            running_loss += loss.item()
 
             if (i + 1) % args.gradient_accumulation_steps == 0:
                 # Log useful debug info to wandb
@@ -406,37 +465,37 @@ def train(args):
     tokenizer.save_pretrained(args.output_dir)
     print(f"Model saved to {args.output_dir}")
 
-    print("Starting evaluation")
-    model.eval()
-    eval_dataset = SFTDataset(tokenizer, sect="test", max_len=args.max_seq_len)
-    eval_dataloader = DataLoader(eval_dataset, batch_size=args.batch_size, shuffle=False)
+    # print("Starting evaluation")
+    # model.eval()
+    # eval_dataset = SFTDataset(tokenizer, sect="test", max_len=args.max_seq_len)
+    # eval_dataloader = DataLoader(eval_dataset, batch_size=args.batch_size, shuffle=False)
 
-    total_eval_loss = 0.0
-    total_eval_tokens = 0
+    # total_eval_loss = 0.0
+    # total_eval_tokens = 0
 
-    with torch.no_grad():
-        for batch in tqdm(eval_dataloader, desc="Evaluating"):
-            input_ids = batch["input_ids"].to(device)
-            prompt_lengths = batch["prompt_length"].to(device)
+    # with torch.no_grad():
+    #     for batch in tqdm(eval_dataloader, desc="Evaluating"):
+    #         input_ids = batch["input_ids"].to(device)
+    #         prompt_lengths = batch["prompt_length"].to(device)
 
-            # Mask the entire answer portion (no randomness)
-            p_mask = torch.zeros_like(input_ids, dtype=torch.bool)
-            for b in range(input_ids.size(0)):
-                p_mask[b, prompt_lengths[b]:] = 1
+    #         # Mask the entire answer portion (no randomness)
+    #         p_mask = torch.zeros_like(input_ids, dtype=torch.bool)
+    #         for b in range(input_ids.size(0)):
+    #             p_mask[b, prompt_lengths[b]:] = 1
 
-            noisy_input = input_ids.clone()
-            noisy_input[p_mask] = MASK_TOKEN_ID
+    #         noisy_input = input_ids.clone()
+    #         noisy_input[p_mask] = MASK_TOKEN_ID
 
-            with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
-                outputs = model(input_ids=noisy_input)
-                loss = compute_llada_sft_loss(outputs.logits, input_ids, p_mask, prompt_lengths)
+    #         with torch.autocast(device_type=device, dtype=torch.bfloat16 if device == "cuda" else torch.float32):
+    #             outputs = model(input_ids=noisy_input)
+    #             loss = compute_llada_sft_loss(outputs.logits, input_ids, p_mask, prompt_lengths)
 
-            total_eval_loss += loss.item() * p_mask.sum().item()
-            total_eval_tokens += p_mask.sum().item()
+    #         total_eval_loss += loss.item() * p_mask.sum().item()
+    #         total_eval_tokens += p_mask.sum().item()
 
-    avg_eval_loss = total_eval_loss / total_eval_tokens if total_eval_tokens > 0 else 0.0
-    print(f"[Eval] Avg loss: {avg_eval_loss:.4f}")
-    wandb.log({"eval/avg_loss": avg_eval_loss})
+    # avg_eval_loss = total_eval_loss / total_eval_tokens if total_eval_tokens > 0 else 0.0
+    # print(f"[Eval] Avg loss: {avg_eval_loss:.4f}")
+    # wandb.log({"eval/avg_loss": avg_eval_loss})
     
     wandb.finish()
 
@@ -446,22 +505,28 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="GSAI-ML/LLaDA-8B-Instruct")
     parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--lr", type=float, default=2e-4)
     parser.add_argument("--max_seq_len", type=int, default=64)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
     parser.add_argument('--baseline', action='store_true', help='Enable baseline mode.')
+    parser.add_argument('--weighted', action='store_true', help='Enable weighted timesteps mode.')
     parser.add_argument("--output_dir", type=str, default=None)
 
     args = parser.parse_args()
 
     if args.output_dir is None:
-        if args.baseline:
-            print("Running Baseline Uniform Masking")
+        if args.baseline and not args.weighted:
+            print("Running Baseline Uniform Masking with Uniform Timesteps")
             args.output_dir = "./llada-lora-sft-baseline"
+        elif args.baseline and args.weighted:
+            print("Running Baseline Uniform Masking with Weighted Timesteps")
+            args.output_dir = "./llada-lora-sft-baseline-weighted"
+        elif not args.baseline and args.weighted:
+            print("Running Custom Masking Schedule with Weighted Timesteps")
+            args.output_dir = "./llada-lora-sft-masking-sched"
         else:
-            print("Running Custom Masking Schedule")
-            # args.output_dir = "./llada-lora-sft-masking-sched"
+            print("Running Custom Masking Schedule with Uniform Timesteps")
             args.output_dir = "./llada-lora-sft-masking-sched-weighted-timesteps"
 
     train(args)

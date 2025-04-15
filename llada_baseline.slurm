@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --time=01:10:00
+#SBATCH --time=03:00:00
 #SBATCH --output=llada_baseline_output.log
 #SBATCH --error=llada_baseline_output.log
 
@@ -21,4 +21,4 @@ echo "🔥 Trying to import torch..."
 python -c "import torch; print('Torch version:', torch.__version__)"
 
 echo "🚀 Launching Gradio app"
-/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora_sched_masking.py --baseline
+/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/train_llada_lora_sched_masking.py --baseline --weighted
