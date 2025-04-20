@@ -4,7 +4,6 @@ import torch.nn.functional as F
 
 from transformers import AutoTokenizer, AutoModel
 
-
 def add_gumbel_noise(logits, temperature):
     '''
     The Gumbel max is a method for sampling categorical distributions.
@@ -42,7 +41,7 @@ def get_num_transfer_tokens(mask_index, steps):
 
 @ torch.no_grad()
 def generate(model, prompt, steps=128, gen_length=128, block_length=128, temperature=0.,
-             cfg_scale=0., remasking='low_confidence', mask_id=126336):
+             cfg_scale=0., remasking='low_confidence', mask_id=126336, tokenid_to_priority=None):
     '''
     Args:
         model: Mask predictor.
@@ -55,6 +54,9 @@ def generate(model, prompt, steps=128, gen_length=128, block_length=128, tempera
         remasking: Remasking strategy. 'low_confidence' or 'random'.
         mask_id: The toke id of [MASK] is 126336.
     '''
+
+    idf_tracking = [[] for _ in range(steps)]
+
     x = torch.full((1, prompt.shape[1] + gen_length), mask_id, dtype=torch.long).to(model.device)
     x[:, :prompt.shape[1]] = prompt.clone()
 
@@ -90,6 +92,10 @@ def generate(model, prompt, steps=128, gen_length=128, block_length=128, tempera
                     torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1) # b, l
             elif remasking == 'random':
                 x0_p = torch.rand((x0.shape[0], x0.shape[1]), device=x0.device)
+            elif remasking == 'idf_priority':
+                idfs = tokenid_to_priority[x0.cpu().numpy()]
+                idfs = torch.tensor(idfs).to(x0.device)
+                x0_p = idfs.float()
             else:
                 raise NotImplementedError(remasking)
 
@@ -104,7 +110,15 @@ def generate(model, prompt, steps=128, gen_length=128, block_length=128, tempera
                 transfer_index[j, select_index] = True
             x[transfer_index] = x0[transfer_index]
 
-    return x
+
+            #add generated tokens at this step
+            for j in range(transfer_index.shape[0]):
+                filled_ids = x0[j][transfer_index[j]].tolist()
+                for tid in filled_ids:
+                    idf = tokenid_to_priority[tid]
+                    idf_tracking[i].append(idf)
+
+    return x, idf_tracking
 
 
 def main():

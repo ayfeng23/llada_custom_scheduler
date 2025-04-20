@@ -88,7 +88,7 @@ class SFTDataset(Dataset):
         elif sect == "test":
             ds = ds.select(range(60000, 68000))
         elif sect == "validate":
-            ds = ds.select(range(68000, len(ds)))
+            ds = ds.select(range(68000, 70000))
 
         for ex in ds:
             prompt = ex["messages"][0]["content"]
@@ -140,7 +140,7 @@ def timestep_schedule(args):
 #FIX THIS
 #for 60k, 5 and 12k
 #for 10k 7 and 1500
-def sampling_schedule(step, total_steps, schedule_type='inv_sigmoid', k=7.0, t=1500):
+def sampling_schedule(step, total_steps, schedule_type='inv_sigmoid', k=5.0, t=12000):
     """
     Returns the probability of using the scheduled sampling logic (i.e. get_timestamp with uniform mix)
     """
@@ -175,8 +175,8 @@ def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
         return orig_forward_process(input_ids, mask_prob, mask_token_id=MASK_TOKEN_ID)
         # timestamps = np.random.rand(*token_ids.shape)  # shape (B, L)
     else:
-        a = 1 + gamma * priorities
-        b = 1 + gamma * (1 - priorities)
+        b = 1 + gamma * priorities
+        a = 1 + gamma * (1 - priorities)
         timestamps = beta.rvs(a, b, size=token_ids.shape)
 
     print("Running New Forward Process")
@@ -204,16 +204,39 @@ def new_forward_process(input_ids, mask_prob, tokenid_to_priority,
 
     return noisy_input, p_mask, sorted_indices
 
-def forward_process(input_ids, mask_prob, step, total_steps, tokenid_to_priority, mask_token_id=MASK_TOKEN_ID, temperature=0.3):
+def forward_process(input_ids, mask_prob, step, total_steps, tokenid_to_priority, mask_token_id=MASK_TOKEN_ID, temperature=0.3, idf_storage=None):
     
     p = sampling_schedule(step, total_steps)
     print("Sampling Schedule Degbugging", step, p)
     if np.random.rand() < p:
         #print("Original Forward Process")
         noisy_input, p_mask, sorted_indices = orig_forward_process(input_ids, mask_prob, mask_token_id=mask_token_id)
+        strategy = "orig"
     else:
         #print("New Forward Process")
         noisy_input, p_mask, sorted_indices = new_forward_process(input_ids, mask_prob, tokenid_to_priority, mask_token_id=mask_token_id, temperature=temperature)
+        strategy = "new"
+
+    token_ids = input_ids.detach().cpu().numpy()
+    mask_flags = p_mask.detach().cpu().numpy()
+
+    masked_token_ids = token_ids[mask_flags]
+    unmasked_token_ids = token_ids[~mask_flags]
+
+    # print(f"[DEBUG] Strategy: {strategy}")
+    # print(f"[DEBUG] Available idf_storage keys: {list(idf_storage.keys())}")
+    # print(f"[DEBUG] idf_storage[{strategy}_masked]: {idf_storage.get(f'{strategy}_masked')}")
+
+    idf_storage[f"{strategy}_masked"].extend(tokenid_to_priority[masked_token_ids].tolist())
+    idf_storage[f"{strategy}_unmasked"].extend(tokenid_to_priority[unmasked_token_ids].tolist())
+    idf_storage["mask_prob"].append(mask_prob)
+
+
+    mean_masked = tokenid_to_priority[masked_token_ids].mean()
+    mean_unmasked = tokenid_to_priority[unmasked_token_ids].mean()
+    print(f"[{strategy.upper()}] mask_prob: {mask_prob:.2f} | masked IDF avg: {mean_masked:.4f} | unmasked IDF avg: {mean_unmasked:.4f}")
+
+
 
     return noisy_input, p_mask, sorted_indices
 
@@ -297,7 +320,7 @@ def train(args):
     )
 
     model = get_peft_model(model, LoraConfig(
-        r=8, lora_alpha=16, lora_dropout=0.05,
+        r=16, lora_alpha=16, lora_dropout=0.05,
         bias="none", task_type="CAUSAL_LM",
         target_modules=["q_proj", "k_proj", "v_proj"]
     ))
@@ -320,6 +343,15 @@ def train(args):
     model.train()
     step_count = 0
 
+    idf_storage = {
+        "mask_prob": [],
+        "orig_masked": [],
+        "orig_unmasked": [],
+        "new_masked": [],
+        "new_unmasked": [],
+    }
+
+
     for epoch in range(args.epochs):
         total_loss = 0.0
         running_loss = 0.0
@@ -333,7 +365,7 @@ def train(args):
             if args.baseline:
                 temperature = 1
             else:
-                temperature = 0.3
+                temperature = 0
 
             noisy_answer, p_mask, _ = forward_process(
                 input_ids=answer_ids,
@@ -342,7 +374,8 @@ def train(args):
                 total_steps=total_steps,
                 tokenid_to_priority=tokenid_to_priority,
                 mask_token_id=MASK_TOKEN_ID,
-                temperature=temperature
+                temperature=temperature,
+                idf_storage=idf_storage
             )
 
             # Reconstruct full input
@@ -465,6 +498,9 @@ def train(args):
     tokenizer.save_pretrained(args.output_dir)
     print(f"Model saved to {args.output_dir}")
 
+    df = pd.DataFrame.from_dict(idf_storage, orient="index").transpose()
+    df.to_csv("idf_masking_stats.csv", index=False)
+
     # print("Starting evaluation")
     # model.eval()
     # eval_dataset = SFTDataset(tokenizer, sect="test", max_len=args.max_seq_len)
@@ -506,7 +542,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", type=str, default="GSAI-ML/LLaDA-8B-Instruct")
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--epochs", type=int, default=1)
-    parser.add_argument("--lr", type=float, default=2e-4)
+    parser.add_argument("--lr", type=float, default=5e-4)
     parser.add_argument("--max_seq_len", type=int, default=64)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
     parser.add_argument('--baseline', action='store_true', help='Enable baseline mode.')
@@ -524,9 +560,9 @@ if __name__ == "__main__":
             args.output_dir = "./llada-lora-sft-baseline-weighted"
         elif not args.baseline and args.weighted:
             print("Running Custom Masking Schedule with Weighted Timesteps")
-            args.output_dir = "./llada-lora-sft-masking-sched"
+            args.output_dir = "./llada-lora-sft-masking-sched-weighted"
         else:
             print("Running Custom Masking Schedule with Uniform Timesteps")
-            args.output_dir = "./llada-lora-sft-masking-sched-weighted-timesteps"
+            args.output_dir = "./llada-lora-sft-masking-sched"
 
     train(args)
