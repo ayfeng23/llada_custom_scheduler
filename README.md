@@ -20,4 +20,4 @@ We use the [smoltalk](https://huggingface.co/datasets/HuggingFaceTB/smoltalk) SF
 
 **Presentation and Report**
 
-Please see our [slides](https://drive.google.com/file/d/1AsE3NJiMB6xW9ke8HFScwsLawjpfZkqC/view?usp=sharing) and [report](URL).
+Please see our [slides](https://drive.google.com/file/d/1AsE3NJiMB6xW9ke8HFScwsLawjpfZkqC/view?usp=sharing) and [report](https://drive.google.com/file/d/1UdWmG3YBmZcJXTBxXCfwW2K8CfQwcRjo/view?usp=sharing).
