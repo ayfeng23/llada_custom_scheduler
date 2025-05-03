@@ -21,4 +21,4 @@ echo "🔥 Trying to import torch..."
 python -c "import torch; print('Torch version:', torch.__version__)"
 
 echo "🚀 Launching Gradio app"
-/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/val_test.py
+/home/alm293/.conda/envs/llada_env/bin/python ~/llada_lora_scheduler/LLaDA/run_test.py
